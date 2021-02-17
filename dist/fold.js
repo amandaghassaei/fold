@@ -1730,13 +1730,13 @@ geom.reflectLine = function(p, a, b) {
 Matrix transformations
 
 2D transformation matrices are of the form (where last column is optional):
-[[a, b, c],
- [d, e, f]]
+  [[a, b, c],
+   [d, e, f]]
 
 3D transformation matrices are of the form (where last column is optional):
-[[a, b, c, d],
- [e, f, g, h],
- [i, j, k, l]]
+  [[a, b, c, d],
+   [e, f, g, h],
+   [i, j, k, l]]
 
 Transformation matrices are designed to be multiplied on the left of points,
 i.e., T*x gives vector x transformed by matrix T, where x has an implicit 1
@@ -2543,12 +2543,28 @@ oripa.fromFold = function(fold) {
   if (typeof fold === 'string') {
     fold = JSON.parse(fold);
   }
-  s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n<java version=\"1.5.0_05\" class=\"java.beans.XMLDecoder\"> \n <object class=\"oripa.DataSet\"> \n  <void property=\"mainVersion\"> \n   <int>1</int> \n  </void> \n  <void property=\"subVersion\"> \n   <int>1</int> \n  </void> \n  <void property=\"paperSize\"> \n   <double>400.0</double> \n  </void> \n";
+  s = `<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.5.0_05" class="java.beans.XMLDecoder"> 
+ <object class="oripa.DataSet"> 
+  <void property="mainVersion"> 
+   <int>1</int> 
+  </void> 
+  <void property="subVersion"> 
+   <int>1</int> 
+  </void> 
+  <void property="paperSize"> 
+   <double>400.0</double> 
+  </void> 
+`;
   ref1 = oripa.prop_xml2fold;
   for (xp in ref1) {
     fp = ref1[xp];
     //if fp of fold
-    s += `.\n  <void property="${xp}"> \n   <string>${fold[fp] || ''}</string> \n  </void> \n`.slice(2);
+    s += `.
+  <void property="${xp}"> 
+   <string>${fold[fp] || ''}</string> 
+  </void> 
+`.slice(2);
   }
   z = 0;
   lines = (function() {
@@ -2583,12 +2599,40 @@ oripa.fromFold = function(fold) {
     }
     return results;
   })();
-  s += `.\n  <void property="lines"> \n   <array class="oripa.OriLineProxy" length="${lines.length}"> \n`.slice(2);
+  s += `.
+  <void property="lines"> 
+   <array class="oripa.OriLineProxy" length="${lines.length}"> 
+`.slice(2);
   for (i = j = 0, len = lines.length; j < len; i = ++j) {
     line = lines[i];
-    s += `.\n    <void index="${i}"> \n     <object class="oripa.OriLineProxy"> \n      <void property="type"> \n       <int>${line.type}</int> \n      </void> \n      <void property="x0"> \n       <double>${line.x0}</double> \n      </void> \n      <void property="x1"> \n       <double>${line.x1}</double> \n      </void> \n      <void property="y0"> \n       <double>${line.y0}</double> \n      </void> \n      <void property="y1"> \n       <double>${line.y1}</double> \n      </void> \n     </object> \n    </void> \n`.slice(2);
+    s += `.
+    <void index="${i}"> 
+     <object class="oripa.OriLineProxy"> 
+      <void property="type"> 
+       <int>${line.type}</int> 
+      </void> 
+      <void property="x0"> 
+       <double>${line.x0}</double> 
+      </void> 
+      <void property="x1"> 
+       <double>${line.x1}</double> 
+      </void> 
+      <void property="y0"> 
+       <double>${line.y0}</double> 
+      </void> 
+      <void property="y1"> 
+       <double>${line.y1}</double> 
+      </void> 
+     </object> 
+    </void> 
+`.slice(2);
   }
-  s += ".\n   </array> \n  </void> \n </object> \n</java> \n".slice(2);
+  s += `.
+   </array> 
+  </void> 
+ </object> 
+</java> 
+`.slice(2);
   return s;
 };
 
@@ -2654,7 +2698,7 @@ viewer.makePath = function(coords) {
     results = [];
     for (i = l = 0, len = coords.length; l < len; i = ++l) {
       c = coords[i];
-      results.push(`${(i === 0 ? 'M' : 'L')} ${c[0]} ${c[1]} `);
+      results.push(`${i === 0 ? 'M' : 'L'} ${c[0]} ${c[1]} `);
     }
     return results;
   })()).reduce(geom.sum);
@@ -3049,7 +3093,7 @@ viewer.makeModel = function(fold) {
           if (m.fs[f1].ord[`f${f2}`] != null) {
             console.log(`Warning: duplicate ordering input information for faces ${f1} and ${f2}. Using first found in the faceOrder list.`);
             if (m.fs[f1].ord[`f${f2}`] !== o) {
-              console.log(`Error: duplicat ordering [${f1},${f2},${o}] is inconsistant with a previous entry.`);
+              console.log(`Error: duplicate ordering [${f1},${f2},${o}] is inconsistent with a previous entry.`);
             }
           } else {
             m.fs[f1].ord[`f${f2}`] = o;
@@ -3387,9 +3431,10 @@ module.exports = {
   geom: require('./geom'),
   viewer: require('./viewer'),
   filter: require('./filter'),
-  convert: require('./convert'),
-  file: require('./file')
+  convert: require('./convert')
 };
 
+// file: require './file'
 
-},{"./convert":2,"./file":1,"./filter":3,"./geom":4,"./viewer":6}]},{},[]);
+
+},{"./convert":2,"./filter":3,"./geom":4,"./viewer":6}]},{},[]);

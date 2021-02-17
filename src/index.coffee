@@ -3,4 +3,4 @@ module.exports =
   viewer: require './viewer'
   filter: require './filter'
   convert: require './convert'
-  file: require './file'
+ # file: require './file'
